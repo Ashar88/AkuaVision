@@ -2,7 +2,7 @@ version: "3"
 services:
   backend:
     build: ./backend
-    restart: always
+    container_name: backend_container
     volumes:
       - ./backend:/usr/src/app
       - /usr/src/app/node_modules
@@ -10,7 +10,7 @@ services:
       - "8888:8888"
     environment:
       - NODE_ENV=development
-      - DATABASE=mongodb://mongo:27017/local-idurar-erp-crp
+      - DATABASE=mongodb://mongo:27017/aquaVision
       - PORT=8888
       - NODE_OPTIONS=--openssl-legacy-provider
       - JWT_SECRET=secret_key_1234
@@ -25,12 +25,12 @@ services:
 
   frontend:
     build: ./frontend
-    restart: always
+    container_name: frontend_container
     volumes:
       - ./frontend:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - "3000:3000"
+      - "5000:3000"
     environment:
       - NODE_ENV=development
       - REACT_APP_API_URL=http://backend:8888/api
@@ -41,10 +41,15 @@ services:
 
   mongo:
     image: mongo
+    container_name: mongo_container
     volumes:
       - mongodb_data:/data/db
     networks:
       - server-mongo
+    ports:
+      - "27017:27017"
+    expose:
+      - "27017"
 
 volumes:
   mongodb_data:
