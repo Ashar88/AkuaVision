@@ -1,7 +1,8 @@
 const express = require('express');
 
 const cors = require('cors');
-const compression = require('compression');
+const compression = require('compression'); 
+const morgan = require('morgan'); 
 
 const cookieParser = require('cookie-parser');
 
@@ -25,6 +26,7 @@ app.use(
   })
 );
 
+app.use(morgan('common'));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

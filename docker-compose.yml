@@ -15,7 +15,7 @@ services:
       - NODE_OPTIONS=--openssl-legacy-provider
       - JWT_SECRET=secret_key_1234
 
-    command: sh -c "npm run setup && npm run dev"
+    command: sh -c "npm run dev"
 
     networks:
       - server-mongo
