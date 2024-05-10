@@ -12,20 +12,12 @@ import useResponsive from '@/hooks/useResponsive';
 
 import {
   SettingOutlined,
-  CustomerServiceOutlined,
-  ContainerOutlined,
-  FileSyncOutlined,
-  DashboardOutlined,
-  TagOutlined,
-  TagsOutlined,
-  UserOutlined,
+  DotChartOutlined,
   CreditCardOutlined,
   MenuOutlined,
-  FileOutlined,
-  ShopOutlined,
-  FilterOutlined,
-  WalletOutlined,
-  ReconciliationOutlined,
+  VideoCameraAddOutlined,
+  PlayCircleOutlined, 
+  FileImageOutlined 
 } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { selectLangDirection } from '@/redux/translate/selectors';
@@ -50,83 +42,38 @@ function Sidebar({ collapsible, isMobile = false }) {
   const translate = useLanguage();
   const navigate = useNavigate();
 
+  const font_style = { fontSize: '17px', color: '#08c' , paddingRight: '10px'}
+
   const items = [
     {
       key: 'dashboard',
-      icon: <DashboardOutlined />,
+      icon: <DotChartOutlined  style={font_style} />,
       label: <Link to={'/'}>{translate('dashboard')}</Link>,
     },
     {
-      key: 'customer',
-      icon: <CustomerServiceOutlined />,
-      label: <Link to={'/customer'}>{translate('customers')}</Link>,
+      key: 'Images',
+      icon: <FileImageOutlined style={font_style} />,
+      label: <Link to={'/customer'}>{translate('Images')}</Link>,
     },
     {
-      key: 'people',
-      icon: <UserOutlined />,
-      label: <Link to={'/people'}>{translate('peoples')}</Link>,
+      key: 'Videos',
+      icon: <VideoCameraAddOutlined  style={font_style}/>,
+      label: <Link to={'/customer'}>{translate('Videos')}</Link>,
     },
     {
-      key: 'company',
-      icon: <ShopOutlined />,
-      label: <Link to={'/company'}>{translate('companies')}</Link>,
-    },
-    {
-      key: 'lead',
-      icon: <FilterOutlined />,
-      label: <Link to={'/lead'}>{translate('leads')}</Link>,
-    },
-    {
-      key: 'offer',
-      icon: <FileOutlined />,
-      label: <Link to={'/offer'}>{translate('offers')}</Link>,
-    },
-    {
-      key: 'invoice',
-      icon: <ContainerOutlined />,
-      label: <Link to={'/invoice'}>{translate('invoices')}</Link>,
-    },
-    {
-      key: 'quote',
-      icon: <FileSyncOutlined />,
-      label: <Link to={'/quote'}>{translate('proforma invoices')}</Link>,
+      key: 'Streaming',
+      icon: <PlayCircleOutlined style={font_style}/>,
+      label: <Link to={'/customer'}>{translate('Streaming')}</Link>,
     },
     {
       key: 'payment',
-      icon: <CreditCardOutlined />,
+      icon: <CreditCardOutlined style={font_style} />,
       label: <Link to={'/payment'}>{translate('payments')}</Link>,
     },
-
-    {
-      key: 'product',
-      icon: <TagOutlined />,
-      label: <Link to={'/product'}>{translate('products')}</Link>,
-    },
-    {
-      key: 'categoryproduct',
-      icon: <TagsOutlined />,
-      label: <Link to={'/category/product'}>{translate('products_category')}</Link>,
-    },
-    {
-      key: 'expenses',
-      icon: <WalletOutlined />,
-      label: <Link to={'/expenses'}>{translate('expenses')}</Link>,
-    },
-    {
-      key: 'expensesCategory',
-      icon: <ReconciliationOutlined />,
-      label: <Link to={'/category/expenses'}>{translate('expenses_Category')}</Link>,
-    },
-    // {
-    //   key: 'employee',
-    //   icon: <UserOutlined />,
-    //   label: <Link to={'/employee'}>{translate('employee')}</Link>,
-    // },
-
     {
       label: translate('Settings'),
       key: 'settings',
-      icon: <SettingOutlined />,
+      icon: <SettingOutlined style={font_style}/>,
       children: [
         {
           key: 'admin',
@@ -136,23 +83,6 @@ function Sidebar({ collapsible, isMobile = false }) {
         {
           key: 'generalSettings',
           label: <Link to={'/settings'}>{translate('settings')}</Link>,
-        },
-        {
-          key: 'currency',
-          label: <Link to={'/settings/currency'}>{translate('currencies')}</Link>,
-        },
-
-        // {
-        //   key: 'emailTemplates',
-        //   label: <Link to={'/email'}>{translate('email_templates')}</Link>,
-        // },
-        {
-          key: 'paymentMode',
-          label: <Link to={'/payment/mode'}>{translate('payments_mode')}</Link>,
-        },
-        {
-          key: 'taxes',
-          label: <Link to={'/taxes'}>{translate('taxes')}</Link>,
         },
         {
           key: 'about',
@@ -231,15 +161,18 @@ function Sidebar({ collapsible, isMobile = false }) {
           />
         )}
       </div>
+
       <Menu
         items={items}
         mode="inline"
         theme={'light'}
         selectedKeys={[currentPath]}
         style={{
+          paddingTop: '3.5rem',
           background: 'none',
           border: 'none',
           width: 256,
+          fontSize: 17
         }}
       />
     </Sider>
