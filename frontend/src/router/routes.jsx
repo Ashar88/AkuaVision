@@ -48,6 +48,7 @@ const Company = lazy(() => import('@/pages/Company'));
 
 const About = lazy(() => import('@/pages/About'));
 const Currency = lazy(() => import('@/pages/Currency'));
+const Register = lazy(() => import('@/pages/Register.jsx'));
 
 let routes = {
   expense: [],
@@ -55,6 +56,10 @@ let routes = {
     {
       path: '/login',
       element: <Navigate to="/" />,
+    },
+    {
+      path: '/register',
+      element: <Register/>,
     },
     {
       path: '/verify/*',
