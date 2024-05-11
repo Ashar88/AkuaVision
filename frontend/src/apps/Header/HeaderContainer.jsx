@@ -12,10 +12,6 @@ import { FILE_BASE_URL } from '@/config/serverApiConfig';
 
 import useLanguage from '@/locale/useLanguage';
 import SelectLanguage from '@/components/SelectLanguage';
-import ChooseCurrency from '@/components/ChooseCurrency';
-
-import UpgradeButton from './UpgradeButton';
-import AppsButton from './AppsButton';
 import { selectLangDirection } from '@/redux/translate/selectors';
 
 export default function HeaderContent() {
@@ -128,17 +124,7 @@ export default function HeaderContent() {
         {/* </Badge> */}
       </Dropdown>
 
-      {/* <AppsButton /> */}
-
-      <UpgradeButton />
-
       <SelectLanguage />
-
-      {location.pathname === '/' && <ChooseCurrency />}
     </Header>
   );
 }
-
-//  console.log(
-//    '🚀 Welcome to IDURAR ERP CRM! Did you know that we also offer commercial customization services? Contact us at hello@idurarapp.com for more information.'
-//  );

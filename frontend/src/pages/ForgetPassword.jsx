@@ -55,9 +55,8 @@ const ForgetPassword = () => {
     return (
       <Result
         status="success"
-        title={translate('Check your email address to reset your password')}
-        subTitle={translate('Password Reset in progress')}
-        style={{ maxWidth: '450px', margin: 'auto' }}
+        title={translate('Password Reset in progress')}
+        subTitle={translate('Check your email address to reset your password')}
         extra={
           <Button
             type="primary"

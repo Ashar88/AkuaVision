@@ -1,0 +1,28 @@
+.App{
+  padding: 50px;
+  width: 100%;
+  border: 1px solid blue;
+  height: 50vh;
+  overflow-y: auto;
+}
+.header{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.parent{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid gray;
+}
+
+.ant-upload.ant-upload-drag{
+width: 70%;
+margin: 20px;
+}
+.ant-upload-list.ant-upload-list-picture{
+width: 40%;
+margin: 20px;
+}

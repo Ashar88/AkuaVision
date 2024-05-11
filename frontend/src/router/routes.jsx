@@ -7,6 +7,7 @@ const NotFound = lazy(() => import('@/pages/NotFound.jsx'));
 
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
 const Customer = lazy(() => import('@/pages/Customer'));
+const Images = lazy(() => import('@/pages/Images'));
 const Inventory = lazy(() => import('@/pages/Inventory'));
 const Order = lazy(() => import('@/pages/Order'));
 const Invoice = lazy(() => import('@/pages/Invoice'));
@@ -48,6 +49,7 @@ const Company = lazy(() => import('@/pages/Company'));
 
 const About = lazy(() => import('@/pages/About'));
 const Currency = lazy(() => import('@/pages/Currency'));
+const Register = lazy(() => import('@/pages/Register.jsx'));
 
 let routes = {
   expense: [],
@@ -55,6 +57,10 @@ let routes = {
     {
       path: '/login',
       element: <Navigate to="/" />,
+    },
+    {
+      path: '/register',
+      element: <Register/>,
     },
     {
       path: '/verify/*',
@@ -79,6 +85,10 @@ let routes = {
     {
       path: '/customer',
       element: <Customer />,
+    },
+    {
+      path: '/images',
+      element: <Images />,
     },
     {
       path: '/people',
