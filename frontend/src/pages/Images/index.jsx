@@ -17,7 +17,7 @@ const App = () => {
   const [previewImage, setPreviewImage] = useState('');
   const [fileList, setFileList] = useState();
 
-const handlePreview = async (file) => {
+  const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
@@ -30,57 +30,65 @@ const handlePreview = async (file) => {
 
   return (
     <div className="App">
-      <h2 className="header">File Upload</h2>
-      <Dragger
-        name="file"
-        multiple
-        action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-        beforeUpload={(file) => {
-          const isImage = file.type.startsWith('image/');
-          if (!isImage) {
-            message.error(`${file.name} is not an image file.`);
-            return false;
-          }
-          return isImage;
-        }}
-        onChange={(info) => {
-          const { status } = info.file;
-          if (status !== 'uploading') {
-            console.log(info.file, info.fileList);
-          }
-          if (status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully.`);
-          } else if (status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-          }
-          handleChange(info);
-        }}
-        listType= "picture"
-        fileList={fileList}
-        onPreview={handlePreview}
-        className="parent"
-      >
-        <p className="ant-upload-drag-icon">
-          <InboxOutlined />
-        </p>
-        <p className="ant-upload-text">Click or drag file to this area to upload</p>
-        <p className="ant-upload-hint">
-          Support for a single or bulk upload. Strictly prohibited from uploading company data or other banned files.
-        </p>
-      </Dragger>
+      <div className='cont1'>
+        <h2 className="header">File Upload</h2>
+        <Dragger
+          name="file"
+          multiple
+          action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
+          beforeUpload={(file) => {
+            const isImage = file.type.startsWith('image/');
+            if (!isImage) {
+              message.error(`${file.name} is not an image file.`);
+              return false;
+            }
+            return isImage;
+          }}
+          onChange={(info) => {
+            const { status } = info.file;
+            if (status !== 'uploading') {
+              console.log(info.file, info.fileList);
+            }
+            if (status === 'done') {
+              message.success(`${info.file.name} file uploaded successfully.`);
+            } else if (status === 'error') {
+              message.error(`${info.file.name} file upload failed.`);
+            }
+            handleChange(info);
+          }}
+          listType="picture"
+          fileList={fileList}
+          onPreview={handlePreview}
+          className="parent"
+        >
+          <p className="ant-upload-drag-icon">
+            <InboxOutlined />
+          </p>
+          <p className="ant-upload-text">Click or drag file to this area to upload</p>
+          <p className="ant-upload-hint">
+            Support for a single or bulk upload. Strictly prohibited from uploading company data or other banned files.
+          </p>
+        </Dragger>
         {previewImage && (
-        <Image
-          wrapperStyle={{
-            display: 'none',
-          }}
-          preview={{
-            visible: previewOpen,
-            onVisibleChange: (visible) => setPreviewOpen(visible),
-            afterOpenChange: (visible) => !visible && setPreviewImage(''),
-          }}
-          src={previewImage}
-        />
-      )}
+          <Image
+            wrapperStyle={{
+              display: 'none',
+            }}
+            preview={{
+              visible: previewOpen,
+              onVisibleChange: (visible) => setPreviewOpen(visible),
+              afterOpenChange: (visible) => !visible && setPreviewImage(''),
+            }}
+            src={previewImage}
+          />
+        )}
+        
+      </div>
+
+      <div className='cont2'>
+        <h2 className="header">Processed Result</h2>
+        
+      </div>
     </div>
   );
 };
