@@ -53,17 +53,17 @@ function Sidebar({ collapsible, isMobile = false }) {
     {
       key: 'Images',
       icon: <FileImageOutlined style={font_style} />,
-      label: <Link to={'/customer'}>{translate('Images')}</Link>,
+      label: <Link to={'/images'}>{translate('Images')}</Link>,
     },
     {
       key: 'Videos',
       icon: <VideoCameraAddOutlined  style={font_style}/>,
-      label: <Link to={'/customer'}>{translate('Videos')}</Link>,
+      label: <Link to={'/videos'}>{translate('Videos')}</Link>,
     },
     {
       key: 'Streaming',
       icon: <PlayCircleOutlined style={font_style}/>,
-      label: <Link to={'/customer'}>{translate('Streaming')}</Link>,
+      label: <Link to={'/streaming'}>{translate('Streaming')}</Link>,
     },
     {
       key: 'payment',
