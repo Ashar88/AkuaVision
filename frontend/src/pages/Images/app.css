@@ -2,6 +2,8 @@
   padding: 50px;
   width: 100%;
   border: 1px solid blue;
+  height: 50vh;
+  overflow-y: auto;
 }
 .header{
   display: flex;
@@ -10,7 +12,7 @@
 }
 .parent{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   border-top: 1px solid gray;
@@ -21,10 +23,6 @@ width: 70%;
 margin: 20px;
 }
 .ant-upload-list.ant-upload-list-picture{
-/* display: none; */
 width: 40%;
 margin: 20px;
-}
-.display_none{
-    display: block;
 }
