@@ -15,7 +15,8 @@ const getBase64 = (file) =>
 const App = () => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
-  const [fileList, setFileList] = useState();
+  const [fileList, setFileList] = useState([]);
+  const [processing, setProcessing] = useState(false);
 
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -26,8 +27,34 @@ const App = () => {
   };
 
 
-  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+  const handleChange = (info) => {
+    setFileList(info.fileList);
+    console.log(info)
+    if (info.file.status === 'uploading') {
+      setProcessing(true);
+    } else if (info.file.status === 'done') {
+      setProcessing(false);
+      message.success(`${info.file.name} file uploaded successfully.`);
+    } else if (info.file.status === 'error') {
+      setProcessing(false);
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  };
 
+
+  const imagesToReview = [
+    {
+      src:
+        "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
+      preview:
+        "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
+      width: 150,
+      placeholder: true,
+      name:"bablu class"
+    }
+  ];
+
+  console.log(fileList)
   return (
     <div className="App">
       <div className='cont1'>
@@ -44,18 +71,7 @@ const App = () => {
             }
             return isImage;
           }}
-          onChange={(info) => {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-              console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-              message.success(`${info.file.name} file uploaded successfully.`);
-            } else if (status === 'error') {
-              message.error(`${info.file.name} file upload failed.`);
-            }
-            handleChange(info);
-          }}
+          onChange={handleChange}
           listType="picture"
           fileList={fileList}
           onPreview={handlePreview}
@@ -69,6 +85,16 @@ const App = () => {
             Support for a single or bulk upload. Strictly prohibited from uploading company data or other banned files.
           </p>
         </Dragger>
+        {processing && (
+          <div className="loading-placeholder">
+            <p>Processing...</p>
+          </div>
+        )}
+        {fileList?.length > 0 && !processing && (
+          <Image
+            src={fileList[0].url}
+          />
+        )}
         {previewImage && (
           <Image
             wrapperStyle={{
@@ -82,13 +108,33 @@ const App = () => {
             src={previewImage}
           />
         )}
-        
       </div>
+
+
+
+
+      {fileList.length > 0 &&
 
       <div className='cont2'>
         <h2 className="header">Processed Result</h2>
-        
+        <div className='container2'>
+          {fileList.map((file) => (
+            <div key={file.uid} className="file-container">
+              <Image
+                width={150}
+                src={file.src || file.thumbUrl}
+                preview={file.thumbUrl}
+                alt={file.name}
+                placeholder= {file.placeholder}
+                download={file.url || file.thumbUrl}
+              />
+              <span className="file-name">{file.name}</span>
+            </div>
+          ))}
+        </div>
       </div>
+
+      } 
     </div>
   );
 };
