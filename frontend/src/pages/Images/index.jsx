@@ -4,6 +4,8 @@ import { message, Upload, Image } from 'antd';
 import "./app.css";
 const { Dragger } = Upload;
 
+const backendUploadURL = "http://localhost:8888/api/images/upload"
+
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -42,19 +44,6 @@ const App = () => {
   };
 
 
-  const imagesToReview = [
-    {
-      src:
-        "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-      preview:
-        "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-      width: 150,
-      placeholder: true,
-      name:"bablu class"
-    }
-  ];
-
-  console.log(fileList)
   return (
     <div className="App">
       <div className='cont1'>
@@ -62,7 +51,7 @@ const App = () => {
         <Dragger
           name="file"
           multiple
-          action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
+          action={backendUploadURL}
           beforeUpload={(file) => {
             const isImage = file.type.startsWith('image/');
             if (!isImage) {
