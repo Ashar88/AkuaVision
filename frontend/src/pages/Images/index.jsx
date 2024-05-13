@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { InboxOutlined, PlusOutlined } from '@ant-design/icons';
 import { message, Upload, Image } from 'antd';
 import "./app.css";
@@ -19,6 +19,30 @@ const App = () => {
   const [previewImage, setPreviewImage] = useState('');
   const [fileList, setFileList] = useState([]);
   const [processing, setProcessing] = useState(false);
+  const [processedImages, setProcessedImages] = useState([]);
+
+
+  useEffect(() => {
+    const validateImages = async () => {
+      const imageUrls = fileList.map((file) => {
+        // const imageUrl = `/public/uploads/${file.uid}-${file.name}`;
+        const imageUrl = `uploads/rc-upload-1715546659832-17_Screenshot from 2024-05-03 21-33-33.png`;
+        return imageUrl;
+      });
+      const imagePromises = imageUrls.map(async (imageUrl) => {
+        const response = await fetch(imageUrl);
+        if (response.ok) return imageUrl;
+        else return null;
+      });
+      const processed = await Promise.all(imagePromises);
+      setProcessedImages(processed.filter(Boolean));
+    };
+
+    validateImages();
+    const intervalId = setInterval(validateImages, 2000);
+    return () => clearInterval(intervalId);
+  }, [fileList]);
+
 
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -31,7 +55,6 @@ const App = () => {
 
   const handleChange = (info) => {
     setFileList(info.fileList);
-    console.log(info)
     if (info.file.status === 'uploading') {
       setProcessing(true);
     } else if (info.file.status === 'done') {
@@ -51,15 +74,33 @@ const App = () => {
         <Dragger
           name="file"
           multiple
-          action={backendUploadURL}
           beforeUpload={(file) => {
             const isImage = file.type.startsWith('image/');
-            if (!isImage) {
-              message.error(`${file.name} is not an image file.`);
-              return false;
-            }
-            return isImage;
+              if (!isImage) {
+                message.error(`${file.name} is not an image file.`);
+                return false;
+              }
+              return file
           }}
+          customRequest ={(componentsData) => {
+                let formData = new FormData();
+                formData.append('file', componentsData.file);
+
+                fetch(backendUploadURL + '?uid=' + componentsData.file.uid, {
+                method: 'POST',
+                headers: {
+                  contentType: "multipart/form-data"
+                },
+                body: formData
+              })
+            .then(response => response.json())
+            .then(data => data.data)
+            .then(data=> componentsData.onSuccess())
+            .catch(error => {
+                  console.log('Error fetching profile ' + error)
+                componentsData.onError("Error uploading image")
+              })      
+        }}
           onChange={handleChange}
           listType="picture"
           fileList={fileList}
@@ -69,9 +110,9 @@ const App = () => {
           <p className="ant-upload-drag-icon">
             <InboxOutlined />
           </p>
-          <p className="ant-upload-text">Click or drag file to this area to upload</p>
+          <p className="ant-upload-text">Click or drag Images to this area to upload</p>
           <p className="ant-upload-hint">
-            Support for a single or bulk upload. Strictly prohibited from uploading company data or other banned files.
+            Support for a single or bulk images upload.
           </p>
         </Dragger>
         {processing && (
@@ -102,22 +143,23 @@ const App = () => {
 
 
 
-      {fileList.length > 0 &&
+
+      {processedImages.length > 0 &&
 
       <div className='cont2'>
         <h2 className="header">Processed Result</h2>
         <div className='container2'>
-          {fileList.map((file) => (
-            <div key={file.uid} className="file-container">
+            {processedImages.map((fileName) => (
+              <div key={fileName} className="file-container">
               <Image
                 width={150}
-                src={file.src || file.thumbUrl}
-                preview={file.thumbUrl}
-                alt={file.name}
-                placeholder= {file.placeholder}
-                download={file.url || file.thumbUrl}
+                src= {fileName}
+                // preview={file.thumbUrl}
+                // alt={file.name}
+                // placeholder= {file.placeholder}
+                // download={fileName}
               />
-              <span className="file-name">{file.name}</span>
+              <span className="file-name">{fileName.split('_')[1]}</span>
             </div>
           ))}
         </div>
