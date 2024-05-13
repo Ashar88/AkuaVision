@@ -14,9 +14,11 @@
 .cont2{
   padding: 50px;
   width: 100%;
-  border: 1px solid green;
+  border: 1px solid blue;
   height: 50vh;
   overflow-y: auto;
+  border-radius: 5px;
+  margin-bottom: 20px;
 }
 .header{
   display: flex;
@@ -47,13 +49,6 @@ width: 40%;
 margin: 20px;
 }
 
-.cont2 {
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-bottom: 20px;
-}
-
 .header {
   font-size: 20px;
   margin-bottom: 10px;
@@ -75,4 +70,10 @@ margin: 20px;
 .file-name {
   margin-top: 5px;
   font-size: 14px;
+}
+
+.toolbar-wrapper{
+  width: 80px; /* Adjust width as needed */
+  height: 80px; /* Adjust height as needed */
+  font-size: 30px; /* Adjust font size as needed (optional) */
 }
