@@ -5,6 +5,7 @@ services:
     container_name: backend_container
     volumes:
       - ./backend:/usr/src/app
+      - ./frontend/public/uploads:/usr/src/app/uploads
       - /usr/src/app/node_modules
     ports:
       - "8888:8888"

@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { InboxOutlined, PlusOutlined } from '@ant-design/icons';
-import { message, Upload, Image } from 'antd';
+import { message, Upload, Image, Space } from 'antd';
 import "./app.css";
+import {
+  DownloadOutlined,
+  RotateLeftOutlined,
+  RotateRightOutlined,
+  SwapOutlined,
+  ZoomInOutlined,
+  ZoomOutOutlined,
+} from '@ant-design/icons';
 const { Dragger } = Upload;
+
+const backendUploadURL = "http://localhost:8888/api/images/upload"
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -17,6 +27,31 @@ const App = () => {
   const [previewImage, setPreviewImage] = useState('');
   const [fileList, setFileList] = useState([]);
   const [processing, setProcessing] = useState(false);
+  const [processedImages, setProcessedImages] = useState([]);
+
+
+  useEffect(() => {
+    const validateImages = async () => {
+      const imageUrls = fileList.map((file) => {
+        const imageUrl = `/public/uploads/${file.uid}_${file.name}`;
+        return { imageUrl, thumbUrl: file.thumbUrl };
+      });
+      const imagePromises = imageUrls.map(async (img) => {
+        const response = await fetch(img.imageUrl);
+        if (response.ok) return img;
+        else return null;
+      });
+      const processed = await Promise.all(imagePromises);
+      // console.log("processed", processed)
+      setProcessedImages(processed.filter(Boolean));
+      // console.log(processedImages)
+    };
+
+    validateImages();
+    const intervalId = setInterval(validateImages, 2000);
+    return () => clearInterval(intervalId);
+  }, [fileList]);
+
 
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -26,10 +61,9 @@ const App = () => {
     setPreviewOpen(true);
   };
 
-
+  
   const handleChange = (info) => {
     setFileList(info.fileList);
-    console.log(info)
     if (info.file.status === 'uploading') {
       setProcessing(true);
     } else if (info.file.status === 'done') {
@@ -42,19 +76,21 @@ const App = () => {
   };
 
 
-  const imagesToReview = [
-    {
-      src:
-        "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-      preview:
-        "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-      width: 150,
-      placeholder: true,
-      name:"bablu class"
-    }
-  ];
+  const onDownload = (imageURL) => {
+    fetch(imageURL)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const url = URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = imageURL.split('_')[1];
+        document.body.appendChild(link);
+        link.click();
+        URL.revokeObjectURL(url);
+        link.remove();
+      });
+  };
 
-  console.log(fileList)
   return (
     <div className="App">
       <div className='cont1'>
@@ -62,15 +98,33 @@ const App = () => {
         <Dragger
           name="file"
           multiple
-          action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
           beforeUpload={(file) => {
             const isImage = file.type.startsWith('image/');
-            if (!isImage) {
-              message.error(`${file.name} is not an image file.`);
-              return false;
-            }
-            return isImage;
+              if (!isImage) {
+                message.error(`${file.name} is not an image file.`);
+                return false;
+              }
+              return file
           }}
+          customRequest ={(componentsData) => {
+                let formData = new FormData();
+                formData.append('file', componentsData.file);
+
+                fetch(backendUploadURL + '?uid=' + componentsData.file.uid, {
+                method: 'POST',
+                headers: {
+                  contentType: "multipart/form-data"
+                },
+                body: formData
+              })
+            .then(response => response.json())
+            .then(data => data.data)
+            .then(data=> componentsData.onSuccess())
+            .catch(error => {
+                  console.log('Error fetching profile ' + error)
+                componentsData.onError("Error uploading image")
+              })      
+        }}
           onChange={handleChange}
           listType="picture"
           fileList={fileList}
@@ -80,9 +134,9 @@ const App = () => {
           <p className="ant-upload-drag-icon">
             <InboxOutlined />
           </p>
-          <p className="ant-upload-text">Click or drag file to this area to upload</p>
+          <p className="ant-upload-text">Click or drag Images to this area to upload</p>
           <p className="ant-upload-hint">
-            Support for a single or bulk upload. Strictly prohibited from uploading company data or other banned files.
+            Support for a single or bulk images upload.
           </p>
         </Dragger>
         {processing && (
@@ -113,22 +167,41 @@ const App = () => {
 
 
 
-      {fileList.length > 0 &&
+
+      {processedImages.length > 0 &&
 
       <div className='cont2'>
         <h2 className="header">Processed Result</h2>
         <div className='container2'>
-          {fileList.map((file) => (
-            <div key={file.uid} className="file-container">
+            {processedImages.map(({ imageUrl, thumbUrl }) => (
+              <div key={imageUrl} className="file-container">
               <Image
                 width={150}
-                src={file.src || file.thumbUrl}
-                preview={file.thumbUrl}
-                alt={file.name}
-                placeholder= {file.placeholder}
-                download={file.url || file.thumbUrl}
+                height={100}
+                src={imageUrl}
+                  preview={{
+                    toolbarRender: (
+                      _,
+                      {
+                        transform: { scale },
+                        actions: { onFlipY, onFlipX, onRotateLeft, onRotateRight, onZoomOut, onZoomIn },
+                      },
+                    ) => (
+                      <Space size={15} className="toolbar-wrapper">
+                        <DownloadOutlined onClick={() => onDownload(imageUrl)} />
+                        <SwapOutlined rotate={90} onClick={onFlipY} />
+                        <SwapOutlined onClick={onFlipX} />
+                        <RotateLeftOutlined onClick={onRotateLeft} />
+                        <RotateRightOutlined onClick={onRotateRight} />
+                        <ZoomOutOutlined disabled={scale === 1} onClick={onZoomOut} />
+                        <ZoomInOutlined disabled={scale === 50} onClick={onZoomIn} />
+                      </Space>
+                    ),
+                  }}
+                fallback={thumbUrl}
+                download={imageUrl}
               />
-              <span className="file-name">{file.name}</span>
+              <span className="file-name">{imageUrl.split('_')[1]}</span>
             </div>
           ))}
         </div>
