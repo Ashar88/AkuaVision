@@ -25,17 +25,18 @@ const App = () => {
   useEffect(() => {
     const validateImages = async () => {
       const imageUrls = fileList.map((file) => {
-        // const imageUrl = `/public/uploads/${file.uid}-${file.name}`;
-        const imageUrl = `uploads/rc-upload-1715546659832-17_Screenshot from 2024-05-03 21-33-33.png`;
-        return imageUrl;
+        const imageUrl = `/public/uploads/${file.uid}_${file.name}`;
+        return { imageUrl, thumbUrl: file.thumbUrl };
       });
-      const imagePromises = imageUrls.map(async (imageUrl) => {
-        const response = await fetch(imageUrl);
-        if (response.ok) return imageUrl;
+      const imagePromises = imageUrls.map(async (img) => {
+        const response = await fetch(img.imageUrl);
+        if (response.ok) return img;
         else return null;
       });
       const processed = await Promise.all(imagePromises);
+      // console.log("processed", processed)
       setProcessedImages(processed.filter(Boolean));
+      // console.log(processedImages)
     };
 
     validateImages();
@@ -149,17 +150,17 @@ const App = () => {
       <div className='cont2'>
         <h2 className="header">Processed Result</h2>
         <div className='container2'>
-            {processedImages.map((fileName) => (
-              <div key={fileName} className="file-container">
+            {processedImages.map(({ imageUrl, thumbUrl }) => (
+              <div key={imageUrl} className="file-container">
               <Image
                 width={150}
-                src= {fileName}
-                // preview={file.thumbUrl}
-                // alt={file.name}
-                // placeholder= {file.placeholder}
-                // download={fileName}
+                height={100}
+                src={imageUrl}
+                preview={imageUrl}
+                fallback={thumbUrl}
+                download={imageUrl}
               />
-              <span className="file-name">{fileName.split('_')[1]}</span>
+              <span className="file-name">{imageUrl.split('_')[1]}</span>
             </div>
           ))}
         </div>
