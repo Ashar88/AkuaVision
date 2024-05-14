@@ -12,7 +12,7 @@ services:
       - "8888:8888"
     environment:
       - NODE_ENV=development
-      - DATABASE=mongodb://mongo:27017/AKUAVISION
+      - DATABASE=mongodb://mongo:27017/aquaVision
       - PORT=8888
       - NODE_OPTIONS=--openssl-legacy-provider
       - JWT_SECRET=secret_key_1234
@@ -37,7 +37,7 @@ services:
       - "8889:8888"
     environment:
       - NODE_ENV=development
-      - DATABASE=mongodb://mongo:27017/AKUAVISION
+      - DATABASE=mongodb://mongo:27017/aquaVision
       - PORT=8888
       - NODE_OPTIONS=--openssl-legacy-provider
       - JWT_SECRET=secret_key_1234
