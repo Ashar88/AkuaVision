@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { InboxOutlined, PlusOutlined } from '@ant-design/icons';
-import { message, Upload, Image, Space } from 'antd';
+import { message, Upload, Image, Space, Button } from 'antd';
 import "./app.css";
 import {
   DownloadOutlined,
@@ -11,8 +11,13 @@ import {
   ZoomOutOutlined,
 } from '@ant-design/icons';
 const { Dragger } = Upload;
+import axios from 'axios';
+
 
 const backendUploadURL = "http://localhost:8888/api/images/upload"
+const isFileAvaliableURL = "http://localhost:8889/api/isFileAvaliable"
+
+
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -23,6 +28,7 @@ const getBase64 = (file) =>
   });
 
 const App = () => {
+  const [random, setRandom] = useState();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [fileList, setFileList] = useState([]);
@@ -33,25 +39,29 @@ const App = () => {
   useEffect(() => {
     const validateImages = async () => {
       const imageUrls = fileList.map((file) => {
-        const imageUrl = `/public/uploads/${file.uid}_${file.name}`;
+        const imageUrl = `/processed/${file.uid}_${file.name}`;
         return { imageUrl, thumbUrl: file.thumbUrl };
       });
-      const imagePromises = imageUrls.map(async (img) => {
-        const response = await fetch(img.imageUrl);
-        if (response.ok) return img;
-        else return null;
-      });
-      const processed = await Promise.all(imagePromises);
+
+      const processed = [];
+      for (const img of imageUrls) {
+        const response = await axios.get(isFileAvaliableURL + "?filename=" + img.imageUrl);
+        if (response.data === true) {
+          processed.push(img);
+        } else {
+          console.log(`Image not found or processing failed: ${img.imageUrl}`);
+        }
+      }
+
       // console.log("processed", processed)
-      setProcessedImages(processed.filter(Boolean));
-      // console.log(processedImages)
+      setProcessedImages(processed);
+      // console.log("processedImages", processedImages)
     };
 
     validateImages();
-    const intervalId = setInterval(validateImages, 2000);
+    const intervalId = setInterval(validateImages, 1000);
     return () => clearInterval(intervalId);
   }, [fileList]);
-
 
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -83,7 +93,7 @@ const App = () => {
         const url = URL.createObjectURL(new Blob([blob]));
         const link = document.createElement('a');
         link.href = url;
-        link.download = imageURL.split('_')[1];
+        link.download = "Processed_" + imageURL.replace(imageURL.split('_')[0] + '_', '');
         document.body.appendChild(link);
         link.click();
         URL.revokeObjectURL(url);
@@ -173,14 +183,16 @@ const App = () => {
       <div className='cont2'>
         <h2 className="header">Processed Result</h2>
         <div className='container2'>
+          <Space size={12}>
             {processedImages.map(({ imageUrl, thumbUrl }) => (
               <div key={imageUrl} className="file-container">
+
               <Image
                 width={150}
                 height={100}
                 src={imageUrl}
-                  preview={{
-                    toolbarRender: (
+                preview={{
+                  toolbarRender: (
                       _,
                       {
                         transform: { scale },
@@ -198,12 +210,20 @@ const App = () => {
                       </Space>
                     ),
                   }}
-                fallback={thumbUrl}
-                download={imageUrl}
+                  fallback={thumbUrl}
               />
-              <span className="file-name">{imageUrl.split('_')[1]}</span>
+              <span className="file-name">{imageUrl.replace(imageUrl.split('_')[0]+'_','')}</span>
             </div>
           ))}
+          </Space>
+          <Button
+            type="primary"
+            onClick={() => {
+              setRandom(Date.now());
+            }}
+          >
+            Reload
+          </Button>
         </div>
       </div>
 

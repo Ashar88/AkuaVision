@@ -6,3 +6,4 @@ notes.md
 .env.local
 uploads
 *.pdf
+*/__pycache__/*

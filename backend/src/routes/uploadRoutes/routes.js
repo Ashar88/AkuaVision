@@ -18,6 +18,6 @@ const ImageUpload = multer({ storage: storage })
 
 
 router.route('/images/upload').post(ImageUpload.array('file'), catchErrors(ImageController.uploadImages));
-// router.route('/images/processed').get(ImageController.getProcessedImage);
+router.route('/isFileAvaliable').get(ImageController.isFileAvailable);
 
 module.exports = router;
