@@ -3,11 +3,11 @@ let imageController = {};
 
 
 
-imageController.uploadImages = (req, res)=>{
-    return Images.uploadImages(req, res)
+imageController.uploadImages = async (req, res)=>{
+    return await Images.uploadImages(req, res)
 }
-imageController.getProcessedImage = (req, res)=>{
-    return Images.getProcessedImage(req, res)
+imageController.isFileAvailable = (req, res)=>{
+    return Images.isFileAvailable(req, res)
 }
 
 

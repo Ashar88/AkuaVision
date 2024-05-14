@@ -25,6 +25,31 @@ services:
     depends_on:
       - mongo
 
+  backend2:
+    build: ./backendExtra
+    container_name: backend_container_isImage
+    volumes:
+      - ./backendExtra:/usr/src/app
+      - ./frontend/public/uploads:/usr/src/app/uploads
+      - ./frontend/public/processed:/usr/src/app/processed
+      - /usr/src/app/node_modules
+    ports:
+      - "8889:8888"
+    environment:
+      - NODE_ENV=development
+      - DATABASE=mongodb://mongo:27017/aquaVision
+      - PORT=8888
+      - NODE_OPTIONS=--openssl-legacy-provider
+      - JWT_SECRET=secret_key_1234
+
+    # command: bash -c "pip install -r /usr/src/app/python/requirements.txt"
+
+    networks:
+      - server-mongo
+
+    depends_on:
+      - mongo
+
   frontend:
     build: ./frontend
     container_name: frontend_container
