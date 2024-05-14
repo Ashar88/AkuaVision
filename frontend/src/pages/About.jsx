@@ -7,7 +7,7 @@ const About = () => {
   return (
     <Result
       status="info"
-      title={'AQUAVISION'}
+      title={'AKUAVISION'}
       subTitle={translate('Water Quality Management Using Ai & Computer Vision')}
       extra={
         <>
