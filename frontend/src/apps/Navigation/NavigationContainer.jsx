@@ -60,16 +60,16 @@ function Sidebar({ collapsible, isMobile = false }) {
       icon: <VideoCameraAddOutlined  style={font_style}/>,
       label: <Link to={'/videos'}>{translate('Videos')}</Link>,
     },
-    {
-      key: 'Streaming',
-      icon: <PlayCircleOutlined style={font_style}/>,
-      label: <Link to={'/streaming'}>{translate('Streaming')}</Link>,
-    },
-    {
-      key: 'payment',
-      icon: <CreditCardOutlined style={font_style} />,
-      label: <Link to={'/payment'}>{translate('payments')}</Link>,
-    },
+    // {
+    //   key: 'Streaming',
+    //   icon: <PlayCircleOutlined style={font_style}/>,
+    //   label: <Link to={'/streaming'}>{translate('Streaming')}</Link>,
+    // },
+    // {
+    //   key: 'payment',
+    //   icon: <CreditCardOutlined style={font_style} />,
+    //   label: <Link to={'/payment'}>{translate('payments')}</Link>,
+    // },
     {
       label: translate('Settings'),
       key: 'settings',
@@ -136,6 +136,7 @@ function Sidebar({ collapsible, isMobile = false }) {
           [langDirection==="rtl"?"right":"left"]: '20px',
           top: '20px',
           borderRadius: '8px',
+          overflow: 'hidden'
         }),
       }}
       theme={'light'}
@@ -147,19 +148,7 @@ function Sidebar({ collapsible, isMobile = false }) {
           cursor: 'pointer',
         }}
       >
-        <img src={logoIcon} alt="Logo" style={{ marginLeft: '-5px', height: '40px' }} />
-
-        {!showLogoApp && (
-          <img
-            src={logoText}
-            alt="Logo"
-            style={{
-              marginTop: '3px',
-              marginLeft: '10px',
-              height: '38px',
-            }}
-          />
-        )}
+        <img src={logoIcon} alt="Logo" style={{ marginLeft: '-10.75rem', height: '18rem', marginTop:'-6rem' }} />
       </div>
 
       <Menu
