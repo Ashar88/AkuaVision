@@ -14,7 +14,7 @@ export default function SideContent() {
   return (
     <Content
       style={{
-        padding: '150px 30px 30px',
+        padding: '100px 5px 30px',
         width: '100%',
         maxWidth: '400px',
         margin: '0 auto',
@@ -25,27 +25,27 @@ export default function SideContent() {
         <img
           src={logo}
           alt="AKUAVISION"
-          style={{ margin: '0 auto 40px', display: 'block' }}
+          style={{ margin: '0 auto 20px', display: 'block',transform: 'scale(6)' }}
           height={63}
           width={220}
         />
         <div className="space40"></div>
-        <Title level={3}>{translate('Manage your company with')} :</Title>
+        <Title level={3}>{translate('Leveraging AI to Combat Climate Change')} :</Title>
 
         <div className="space20"></div>
         <ul className="list-checked" style={{paddingRight:0}}>
           <li className={`list-checked-item ${langDirection === "rtl" ? "list-checked-item-right" : "list-checked-item-left"}`}>
             <Space direction="vertical">
-              <Text strong>{translate('All-in-one tool')}</Text>
+              <Text strong>{translate('All-in-one tool for Water Management Solutions using AI')}</Text>
 
-              <Text>{translate('Run and scale your ERP CRM Apps')}</Text>
+              <Text>{translate('Run and scale your Model Prediction')}</Text>
             </Space>
           </li>
 
           <li className={`list-checked-item ${langDirection === "rtl" ? "list-checked-item-right" : "list-checked-item-left"}`}>
             <Space direction="vertical">
-              <Text strong>{translate('Easily add and manage your services')}</Text>
-              <Text>{translate('It brings together your invoice clients and leads')}</Text>
+              <Text strong>{translate('Effective Trash Detection using Images & videos')}</Text>
+              <Text>{translate('Improved Water Quality Monitoring')}</Text>
             </Space>
           </li>
         </ul>
