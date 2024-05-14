@@ -149,7 +149,7 @@ const App = () => {
             Support for a single or bulk images upload.
           </p>
         </Dragger>
-        {processing && (
+        {processedImages.length !== fileList.length && (
           <div className="loading-placeholder">
             <p>Processing...</p>
           </div>
