@@ -7,23 +7,20 @@ const About = () => {
   return (
     <Result
       status="info"
-      title={'IDURAR'}
-      subTitle={translate('Do you need help on customize of this app')}
+      title={'AKUAVISION'}
+      subTitle={translate('Water Quality Management Using Ai & Computer Vision')}
       extra={
         <>
           <p>
-            Website : <a href="https://www.idurarapp.com">www.idurarapp.com</a>{' '}
-          </p>
-          <p>
             GitHub :{' '}
-            <a href="https://github.com/idurar/idurar-erp-crm">
-              https://github.com/idurar/idurar-erp-crm
+            <a href="https://github.com/Ashar88/Project-AkuaVision">
+              https://github.com/Ashar88/Project-AkuaVision
             </a>
           </p>
           <Button
             type="primary"
             onClick={() => {
-              window.open(`https://www.idurarapp.com/contact-us/`);
+              window.open(`https://github.com/Ashar88/Project-AkuaVision`);
             }}
           >
             {translate('Contact us')}
