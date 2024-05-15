@@ -39,10 +39,10 @@ const App = () => {
   useEffect(() => {
     const validateImages = async () => {
       const imageUrls = fileList.map((file) => {
-        const imageUrl = `/processed/${file.uid}_${file.name}`;
+        let imageUrl = `/processed/${file.uid}_${file.name}`;
+        imageUrl = imageUrl.replace('mp4', 'avi')
         return { imageUrl, thumbUrl: file.thumbUrl };
       });
-
       const processed = [];
       for (const img of imageUrls) {
         const response = await axios.get(isFileAvaliableURL + "?filename=" + img.imageUrl);
@@ -107,11 +107,10 @@ const App = () => {
         <h2 className="header">File Upload</h2>
         <Dragger
           name="file"
-          multiple
           beforeUpload={(file) => {
-            const isImage = file.type.startsWith('image/');
+            const isImage = file.type.startsWith('video/');
               if (!isImage) {
-                message.error(`${file.name} is not an image file.`);
+                message.error(`${file.name} is not an video file.`);
                 return false;
               }
               return file
@@ -120,7 +119,7 @@ const App = () => {
                 let formData = new FormData();
                 formData.append('file', componentsData.file);
 
-            fetch(backendUploadURL + '?uid=' + componentsData.file.uid +"&type=image", {
+            fetch(backendUploadURL + '?uid=' + componentsData.file.uid +"&type=video", {
                 method: 'POST',
                 headers: {
                   contentType: "multipart/form-data"
@@ -191,26 +190,19 @@ const App = () => {
                 width={150}
                 height={100}
                 src={imageUrl}
-                preview={{
-                  toolbarRender: (
-                      _,
-                      {
-                        transform: { scale },
-                        actions: { onFlipY, onFlipX, onRotateLeft, onRotateRight, onZoomOut, onZoomIn },
-                      },
-                    ) => (
-                      <Space size={15} className="toolbar-wrapper">
-                        <DownloadOutlined onClick={() => onDownload(imageUrl)} />
-                        <SwapOutlined rotate={90} onClick={onFlipY} />
-                        <SwapOutlined onClick={onFlipX} />
-                        <RotateLeftOutlined onClick={onRotateLeft} />
-                        <RotateRightOutlined onClick={onRotateRight} />
-                        <ZoomOutOutlined disabled={scale === 1} onClick={onZoomOut} />
-                        <ZoomInOutlined disabled={scale === 50} onClick={onZoomIn} />
-                      </Space>
+                  preview={{
+                    destroyOnClose: true,
+                    imageRender: () => (
+                      <video
+                        muted
+                        width="50%"
+                        controls
+                        src='/public/uploads/traffictrim.mp4'
+                      />
                     ),
+                    toolbarRender: () => null,
                   }}
-                  fallback={thumbUrl}
+                  fallback={imageUrl}
               />
               <span className="file-name">{imageUrl.replace(imageUrl.split('_')[0]+'_','')}</span>
             </div>

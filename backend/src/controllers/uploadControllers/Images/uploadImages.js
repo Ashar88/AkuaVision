@@ -5,10 +5,18 @@ exports.uploadImages= async (req, res) => {
     try {
         const imagesPath = req.files.map((file) => "/usr/src/app/"+file.path)
         const model_path = '/usr/src/app/python/yolov8_weights/best.pt'
-        const conf_thresh = 0.5 
-        const pythonScriptPath = "/usr/src/app/python/Images/images.py"
+        const conf_thresh = 0.5
+        const imageSize = 720
 
-        const pythonProcess = spawn('python', [pythonScriptPath, imagesPath, model_path, conf_thresh ]);
+        let pythonScriptPath = ''
+        if(req.query.type === 'image'){
+            pythonScriptPath = "/usr/src/app/python/Images/images.py"
+        } 
+        else if (req.query.type === 'video'){
+            pythonScriptPath = "/usr/src/app/python/Videos/videos.py"
+        }
+
+        const pythonProcess = spawn('python', [pythonScriptPath, imagesPath, model_path, conf_thresh, imageSize ]);
 
         const pythonOutput = new Promise((resolve, reject) => {
             let outputData = "";
@@ -29,10 +37,9 @@ exports.uploadImages= async (req, res) => {
             });
         });
 
-        const result = pythonOutput;
+        const result = await pythonOutput;
         console.log("got the response from python file: ", result);
 
-        console.log("inside the node js")
         return res.status(200).send({message: "hello world"})
 
 

@@ -8,6 +8,7 @@ const NotFound = lazy(() => import('@/pages/NotFound.jsx'));
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
 const Customer = lazy(() => import('@/pages/Customer'));
 const Images = lazy(() => import('@/pages/Images'));
+const Videos = lazy(() => import('@/pages/Videos'));
 const Inventory = lazy(() => import('@/pages/Inventory'));
 const Order = lazy(() => import('@/pages/Order'));
 const Invoice = lazy(() => import('@/pages/Invoice'));
@@ -89,6 +90,10 @@ let routes = {
     {
       path: '/images',
       element: <Images />,
+    },
+    {
+      path: '/videos',
+      element: <Videos />,
     },
     {
       path: '/people',
