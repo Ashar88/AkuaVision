@@ -45,11 +45,11 @@ function Sidebar({ collapsible, isMobile = false }) {
   const font_style = { fontSize: '17px', color: '#08c' , paddingRight: '10px'}
 
   const items = [
-    {
-      key: 'dashboard',
-      icon: <DotChartOutlined  style={font_style} />,
-      label: <Link to={'/'}>{translate('dashboard')}</Link>,
-    },
+    // {
+    //   key: 'dashboard',
+    //   icon: <DotChartOutlined  style={font_style} />,
+    //   label: <Link to={'/'}>{translate('dashboard')}</Link>,
+    // },
     {
       key: 'Images',
       icon: <FileImageOutlined style={font_style} />,

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { InboxOutlined, PlusOutlined } from '@ant-design/icons';
 import { message, Upload, Image, Space, Button } from 'antd';
+// import svgImage from '';
 import "./app.css";
 import {
   DownloadOutlined,
@@ -40,7 +41,6 @@ const App = () => {
     const validateImages = async () => {
       const imageUrls = fileList.map((file) => {
         let imageUrl = `/processed/${file.uid}_${file.name}`;
-        imageUrl = imageUrl.replace('mp4', 'avi')
         return { imageUrl, thumbUrl: file.thumbUrl };
       });
       const processed = [];
@@ -189,7 +189,7 @@ const App = () => {
               <Image
                 width={150}
                 height={100}
-                src={imageUrl}
+                  src={"/public/logo/logo-icon.svg"}
                   preview={{
                     destroyOnClose: true,
                     imageRender: () => (
@@ -197,12 +197,12 @@ const App = () => {
                         muted
                         width="50%"
                         controls
-                        src='/public/uploads/traffictrim.mp4'
+                        src={imageUrl}
                       />
                     ),
                     toolbarRender: () => null,
                   }}
-                  fallback={imageUrl}
+                  fallback={"frontend/public/logo/logo-icon.svg"}
               />
               <span className="file-name">{imageUrl.replace(imageUrl.split('_')[0]+'_','')}</span>
             </div>
