@@ -104,7 +104,7 @@ const App = () => {
   return (
     <div className="App">
       <div className='cont1'>
-        <h2 className="header">File Upload</h2>
+        <h2 className="header">Video Upload</h2>
         <Dragger
           name="file"
           beforeUpload={(file) => {
@@ -143,9 +143,9 @@ const App = () => {
           <p className="ant-upload-drag-icon">
             <InboxOutlined />
           </p>
-          <p className="ant-upload-text">Click or drag Images to this area to upload</p>
+          <p className="ant-upload-text">Click or drag Video to this area to upload</p>
           <p className="ant-upload-hint">
-            Support for a single or bulk images upload.
+            Support for a single video upload.
           </p>
         </Dragger>
         {processedImages.length !== fileList.length && (

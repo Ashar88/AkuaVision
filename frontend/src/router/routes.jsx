@@ -81,7 +81,7 @@ let routes = {
     },
     {
       path: '/',
-      element: <Dashboard />,
+      element: <Images />,
     },
     {
       path: '/customer',

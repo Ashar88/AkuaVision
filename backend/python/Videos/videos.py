@@ -5,6 +5,7 @@ import sys
 
 def detect(model_path, video_path, save_path, fileName, conf_thresh=0.5, image=320):
     model = YOLO(model_path)
+    print(video_path)
     results = model(video_path, imgsz=image, conf=conf_thresh, save=True, name=save_path, exist_ok=True, stream=True)
     try:
         for r in results:
@@ -12,11 +13,16 @@ def detect(model_path, video_path, save_path, fileName, conf_thresh=0.5, image=3
     except :
         pass
 
-    convert_avi_to_mp4(save_path+'/'+fileName.replace('.mp4', '.avi'), save_path+'/'+fileName)
+    print(save_path+'/'+fileName.replace('.MP4', '.mp4'))
+    convert_avi_to_mp4(video_path, save_path+'/'+fileName)
 
 
 
 def convert_avi_to_mp4(avi_file_path, output_name):
+#   print(avi_file_path)
+#   if(not os.path.exists(output_name)):
+#       with open(output_name,'w') as p:
+        #   pass
   command = f"ffmpeg -i '{avi_file_path}' -ac 2 -b:v 2000k -c:a aac -c:v libx264 -b:a 160k -vprofile high -bf 0 -strict experimental -f mp4 '{output_name}' -y"
   os.popen(command)
   return True
